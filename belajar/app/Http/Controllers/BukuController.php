@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use Illuminate\Http\Request;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class BukuController extends Controller
 {
@@ -29,7 +30,15 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $val = $request->validate([
+        'kode_buku' => 'required|max:50',
+        'judul' => 'required|max:50',
+        'pengarang' => 'required|max:50',
+        'penerbit' => 'required|max:50',
+        'tahun_terbit' => 'required',
+       ]);
+      Buku::create($val);
+      return redirect()->route('buku.index')->with('succes', $val ['judul'],'Berhasil di Simpan');
     }
 
     /**
